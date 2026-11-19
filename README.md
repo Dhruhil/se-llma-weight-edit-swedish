@@ -1,29 +1,66 @@
 # Swedish Language Fidelity Through Targeted Weight Editing
 
-**SE.LLMA candidate assignment | Dhruhil Patel | 19 November 2026**
+**SE.LLMA Candidate Assignment | Dhruhil Patel | 19 November 2026**
 
-A controlled experiment testing whether a small rank-1 weight edit can improve the Swedish-language response rate of an open-weight language model, inspired by *Sparks of Weight-Space Programming*.
+A controlled experiment testing whether a small rank-one weight edit can improve the Swedish-language response rate of an open-weight language model, inspired by *Sparks of Weight-Space Programming*.
 
-> **Main finding:** On 30 held-out prompts, the rank-1 edit increased Swedish-language detection from 86.7% to 90.0% (one additional response). Five random-direction edits matched the baseline rate, while a Swedish system prompt reached 100%. Qualitative inspection showed that Swedish-language detection did not imply good Swedish answers or factual accuracy.
+**Main finding:** On 30 held-out prompts, the rank-one edit increased Swedish-language detection from 86.7% to 90.0% (one additional response). Five random-direction edits matched the baseline rate, while a Swedish system prompt reached 100%. Qualitative inspection showed that Swedish-language detection did not imply good Swedish answers or factual accuracy.
 
-## Start here
+## Start Here
 
-- **[Research note](research_note.md)** — critical assessment, hypothesis, methods, results and conclusions.
-- **[Results summary](results/summary.md)** — held-out metrics and interpretation.
-- **[Qualitative examples](results/examples.md)** — examples of output quality and failure cases.
-- **[References](docs/REFERENCES.md)** — clickable links to the original research, model and related work.
-- **[AI-use statement](AI_USAGE.md)** — transparent disclosure of AI assistance.
+- **[Research note (PDF)](research_note.pdf)** – Final research note.
+- **[Research note (Markdown)](research_note.md)** – Research note in Markdown.
+- **[Results summary](results/summary.md)** – Held-out metrics and interpretation.
+- **[Qualitative examples](results/examples.md)** – Examples of output quality and failure cases.
+- **[References](docs/REFERENCES.md)** – Original research, model and related work.
+- **[AI usage disclosure](AI_USAGE.md)** – Transparent disclosure of AI assistance.
 
-## Repository structure
+## Research Question
+
+Can a targeted weight edit improve the consistency of Swedish responses compared with an unchanged model and random weight edits, without substantially damaging language modelling?
+
+## Experimental Design
+
+The experiment uses `Qwen/Qwen2.5-0.5B-Instruct` and compares five conditions:
+
+1. Unchanged baseline model.
+2. Rank-one targeted weight editing.
+3. Random-direction weight editing (five runs).
+4. Additive activation steering.
+5. Swedish-language system prompting.
+
+A Swedish-English direction is estimated from 20 parallel sentence pairs. The experiment uses 30 development prompts for configuration selection and 30 separate held-out test prompts for final evaluation.
+
+The primary metric is the proportion of generated responses classified as Swedish. Swedish and English perplexity are supplementary measures.
+
+## Key Held-Out Results
+
+| Method | Swedish responses | Swedish perplexity | English perplexity |
+|---|---:|---:|---:|
+| Unchanged baseline | 26/30 (86.7%) | 89.64 | 23.53 |
+| Swedish system prompt | 30/30 (100%) | Not evaluated | Not evaluated |
+| Rank-one weight edit | 27/30 (90.0%) | 93.35 | 23.53 |
+| Random-direction edit (5-run mean) | 26/30 (86.7%) | 89.56 | 23.52 |
+| Additive activation steering | 27/30 (90.0%) | 86.16 | 24.72 |
+
+The rank-one edit produced only one additional Swedish response compared with the baseline. It did not clearly outperform random edits or match the simple Swedish system prompt. These results do not establish a reliable improvement in Swedish-language capability.
+
+The intervention was not an autonomous LLM weight-reasoning procedure. The direction and edit were specified algorithmically.
+
+## Repository Structure
 
 ```text
 se-llma-weight-edit-swedish/
 ├── README.md
-├── research_note.md
 ├── AI_USAGE.md
 ├── config.yaml
 ├── requirements.txt
 ├── run_experiment.py
+├── make_tables.py
+├── main.tex
+├── references.bib
+├── research_note.md
+├── research_note.pdf
 ├── data/
 │   ├── dev_prompts.txt
 │   ├── test_prompts.txt
@@ -34,51 +71,62 @@ se-llma-weight-edit-swedish/
 │   └── REFERENCES.md
 └── results/
     ├── summary.md
-    └── examples.md
+    ├── examples.md
+    └── results.json
 ```
 
-## Experiment at a glance
+## Requirements and Reproduction
 
-- **Model:** [Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct)
-- **Evaluation:** 30 development prompts and 30 held-out test prompts.
-- **Direction:** mean Swedish-minus-English residual-stream contrast from 20 parallel sentence pairs.
-- **Interventions:** rank-1 weight edit, additive activation steering and a Swedish system prompt.
-- **Controls:** unchanged baseline and five random-direction weight edits.
-- **Selection:** intervention settings selected on development data, then evaluated on the held-out test prompts.
-- **Generation:** greedy decoding, 100 maximum new tokens, seed 0.
+Use Python 3.10 or later.
 
-## Reproduce
+Create and activate a virtual environment:
 
-Use Python 3.10+ and install the listed dependencies:
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+On macOS or Linux, activate it with:
 
 ```bash
-python -m venv .venv
-# Windows:
-.venv\Scripts\activate
-# macOS / Linux:
 source .venv/bin/activate
+```
 
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
+
+Run the experiment:
+
+```bash
 python run_experiment.py --config config.yaml
 ```
 
-The script writes the raw machine-readable output to `results/results.json` and side-by-side generations to `results/examples.md`. Those runtime outputs are not currently included in this repository snapshot; the committed `results/summary.md` records the results supplied for this research note.
+Generate the result tables and plots:
 
-## Key held-out results
+```bash
+python make_tables.py
+```
 
-| Method | Swedish responses | Swedish perplexity | English perplexity |
-|---|---:|---:|---:|
-| Unchanged baseline | 26/30 (86.7%) | 89.64 | 23.53 |
-| Swedish system prompt | 30/30 (100%) | Not evaluated conditionally | Not evaluated conditionally |
-| Rank-1 weight edit | 27/30 (90.0%) | 93.35 | 23.53 |
-| Random-direction edit (5-run mean) | 26/30 (86.7%) | 89.56 | 23.52 |
-| Additive activation steering | 27/30 (90.0%) | 86.16 | 24.72 |
+The experiment uses Qwen2.5-0.5B-Instruct with the `main` model revision and random seed 0. The resolved model commit hash was not recorded for the reported run, which is a reproducibility limitation.
 
-The rank-1 edit did not clearly outperform random edits and did not match the simple system prompt. The intervention was not an autonomous LLM weight-reasoning procedure: the direction and edit were specified algorithmically.
+## Scope and Limitations
 
-## Scope and limitations
+- The development and test sets each contain only 30 prompts.
+- The language direction was estimated from 20 sentence pairs.
+- The random-edit control contains five runs.
+- Language classification measures output language, not correctness, fluency or usefulness.
+- Perplexity does not establish factual accuracy or answer quality.
+- The model revision was configured as `main`, and the resolved commit hash was not recorded.
+- The experiment is a manually specified activation-derived weight intervention, not a complete autonomous implementation of Weight-Space Programming.
 
-This is a small, controlled mechanism-level experiment, not a full reproduction of the Weight-Space Programming paper. Language identification measures the language of an output, not its correctness, fluency or usefulness. The test set and perplexity samples are small; the model revision is configured as `main`, and the resolved model commit was not recorded (`commit: null`). See the research note for the full limitations.
+See the research note for the full methodology, results, critical discussion and limitations.
+
+## AI Usage
+
+See [AI_USAGE.md](AI_USAGE.md) for details of the AI tools used and the author's contributions.
 
 ## References
 

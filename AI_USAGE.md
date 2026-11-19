@@ -1,10 +1,23 @@
-# AI-use statement
+# AI Usage Disclosure
 
-AI assistance was used during preparation of this candidate assignment.
+## Tools Used
 
-- An AI assistant helped discuss and critically organise the source article, refine the hypothesis and experimental controls, review code and documentation, and improve the clarity and structure of the research note.
-- The experiment code and documentation were developed with AI assistance. The reported numerical results are based on the experiment output supplied by the author, not on numbers invented for this document.
-- The author is responsible for checking the implementation, running the experiment, reviewing the outputs and verifying the final submission.
-- This experiment is a manually specified rank-one weight edit and activation-steering comparison. No LLM autonomously inspected the model weights or proposed and iteratively refined the weight edit.
+### Claude Code
+Claude Code was used as a development assistant for Python implementation support, debugging, code review, and resolving technical issues during the experiment.
 
-Any final statement about the exact division of work should reflect the actual work performed by the author.
+### ChatGPT
+ChatGPT was used to support different aspects of the assignment, including:
+- Discussing and critically examining the Weight-Space Programming research.
+- Reviewing the experimental methodology, hypothesis, and evaluation controls.
+- Discussing experimental results and their limitations.
+- Reviewing code and technical documentation.
+- Improving the organisation, clarity, and grammar of the research note.
+
+### Overleaf
+Overleaf was used as the LaTeX writing, editing, and compilation environment for preparing the final research note PDF. It was not used as an AI assistant.
+
+## Author's Contribution and Responsibility
+
+I developed the research direction, formulated the hypothesis, designed and conducted the experiment, and implemented and ran the main experimental workflow. I evaluated the results, interpreted the findings, and developed the conclusions.
+
+AI tools provided supporting assistance during development and writing. I reviewed the code, results, and final written material and take responsibility for the accuracy, integrity, and content of this submission.
