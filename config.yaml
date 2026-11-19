@@ -1,0 +1,16 @@
+# Model: small, open-weight, instruction-tuned. Swap for google/gemma-3-270m-it if the
+# baseline already answers ~100% in Swedish (then there is no failure to fix).
+model_name: Qwen/Qwen2.5-0.5B-Instruct
+revision: main            # TODO: replace with the exact commit hash printed in results/results.json
+seed: 0
+max_new_tokens: 100
+batch_size: 8
+
+# Layer ranges as fractions of model depth; the direction is estimated at the centre layer.
+layer_ranges: [[0.40, 0.60], [0.50, 0.75], [0.65, 0.90]]
+lambdas: [0.5, 1.0]           # strength of the rank-1 weight edit (1.0 = full removal)
+alphas: [0.05, 0.1, 0.2, 0.4] # steering strength, as a fraction of mean token-hidden norm
+
+max_ppl_increase: 0.10        # selection rule: Swedish perplexity may rise at most 10% (dev set)
+n_random: 5                   # random-direction control repetitions
+system_prompt_sv: "Svara alltid på svenska."
