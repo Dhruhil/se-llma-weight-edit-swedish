@@ -1,12 +1,10 @@
-# AI usage
+# AI-use statement
 
-> EDIT THIS so it matches what you really did. Keep it honest and short.
+AI assistance was used during preparation of this candidate assignment.
 
-- **Claude (Anthropic):** discussed and critiqued the paper with me, helped choose the hypothesis and
-  controls, drafted the experiment code (`run_experiment.py`), the Swedish data files and the
-  README / research-note skeleton.
-- **What I did myself:** read the paper and the SE.LLMA page, [ran the experiment on ___ (Colab/GPU)],
-  checked the outputs and numbers, [reviewed/changed the code: ___], and wrote the interpretation
-  and recommendation.
-- **Not verified by AI:** all reported numbers come from my own run of `run_experiment.py`
-  (see `results/results.json`).
+- An AI assistant helped discuss and critically organise the source article, refine the hypothesis and experimental controls, review code and documentation, and improve the clarity and structure of the research note.
+- The experiment code and documentation were developed with AI assistance. The reported numerical results are based on the experiment output supplied by the author, not on numbers invented for this document.
+- The author is responsible for checking the implementation, running the experiment, reviewing the outputs and verifying the final submission.
+- This experiment is a manually specified rank-one weight edit and activation-steering comparison. No LLM autonomously inspected the model weights or proposed and iteratively refined the weight edit.
+
+Any final statement about the exact division of work should reflect the actual work performed by the author.
